@@ -1,0 +1,54 @@
+import pygame
+pygame.init()
+
+screenWidth = 1000
+screenHeight = 500
+
+win = pygame.display.set_mode((screenWidth, screenHeight))
+
+pygame.display.set_caption("First Game")
+
+x = 50
+y = 440
+width = 10
+height = 45
+vel = 10
+isJump = False
+jumpCount = 7
+
+run = True
+while run:
+    pygame.time.delay(20)
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                run = False
+
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_LEFT]:
+        if x > 0:
+            x -= vel
+    if keys[pygame.K_RIGHT]:
+        if x < screenWidth - width:
+            x += vel
+    if not(isJump):
+        if keys[pygame.K_UP]:
+            isJump = True
+    else:
+        if jumpCount >= -7:
+            neg = 1
+            if jumpCount < 0:
+                neg = -1
+            y-= (jumpCount ** 2) * neg
+            jumpCount -= 1
+        else:
+            isJump = False
+            jumpCount = 7
+            
+    win.fill((0,0,0))
+    pygame.draw.circle(win, (255,0,0), (x,y),width)
+    pygame.display.update()
+
+pygame.quit()
